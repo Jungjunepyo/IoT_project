@@ -1,3 +1,4 @@
+# This file should run in bus staion RPi which is used for beaconing purpose
 import subprocess
 import socket
 import blescan
@@ -16,7 +17,7 @@ bct_stop = "00"
 bct_IBEACONPROFIX = "1E 02 01 1A 1A FF 4C 00 02 15"
 bct_UUID = " 00 00 00 AC E8 B4 E0 C2 7D 20 B6 11 B6 11 C7 74"
 bct_MAJOR = "00 02"
-bct_MINOR = "00 03"
+bct_MINOR = "00 03" # Minor number is used for distinguish each bus station, so it should be unique to each bus station
 bct_POWER = "C5 00"
 
 
