@@ -1,0 +1,4 @@
+*.pyc
+*.conf
+dustDat.txt
+/cert2/
