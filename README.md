@@ -1,4 +1,4 @@
-# IoT_project
+# Measuring fine dust density using bus
 
 ## This is IoT project from Team 9, "Design of IoT systems" course in Ajou University, 2019 2nd semester.
 This project is for collecting fine dust density in roadside atmosphere by Raspberry pi by attaching it to city bus and sends collected data to those who need it.
@@ -35,3 +35,8 @@ To work with this project, you should install **blueZ** module in your RPi first
 __testbleemit.py__ should run in RPi which is used for bus station (beaconing) puropse, and __scanAndSend2.py__ should run in RPi which is used for bus purpose.
 
 __dustServer.py__ and __mqtt_shadow.py__ should run in device(PC is recommended) which is used for CoAP server purpose.
+
+Python code in __lambda_func.txt__ is for determining when to operate DPF(Diesel Particulate Filter) -In this project, we assume servo motor as DPF- via AWS Lambda.
+
+
+And __blescan.py__ is originally from https://github.com/switchdoclabs/ibeacon-scanner-.
