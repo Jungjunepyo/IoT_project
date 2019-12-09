@@ -1,6 +1,7 @@
 #This file should be run after running dustServer.py at the same PC
 import time
 import json
+import sys
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient  # need to install AWSIoTPythonSDK via pip
 
 Client_ID = "CoAP_Client"
@@ -26,25 +27,28 @@ def Callback_func(payload, responseStatus, token):
     print("responseStatus = " + responseStatus)
     print("token = " + token)
 
-while True:
-    fp = open("dustDat.txt", "r+")
-    #line_list=[]
-    line_tmp = fp.readline()
-
+def main(minor_input):
     while True:
-        line = fp.readline()
-        if not line:    # If line is last line
-            break
+        fp = open("dustDat.txt", "r+")
+        #line_list=[]
+        line_tmp = json.dumps({"data": "No DATA"})
+        while True:
+            line = fp.readline()
+            if not line:    # If line is last line
+                break
         
-        #Save last selected data to line_tmp
-        dic_ln = json.loads(line)
-        if int(dic_ln['minor_num']) == 3:
-            #line_list.append(json.dumps(dic_ln))
-            line_tmp = line
+            #Save last selected data to line_tmp
+            dic_ln = json.loads(line)
+            if int(dic_ln['minor_num']) == int(minor_input):
+                #line_list.append(json.dumps(dic_ln))
+                line_tmp = line
 
-    #msg = {"state": {"reported": {"dust_data": line_list}}}
-    msg = {"state": {"reported": {"dust_data": json.loads(line_tmp)}}}
-    Device.shadowUpdate(json.dumps(msg), Callback_func, 5)
+        #msg = {"state": {"reported": {"dust_data": line_list}}}
+        msg = {"state": {"reported": {"dust_data": json.loads(line_tmp)}}}
+        Device.shadowUpdate(json.dumps(msg), Callback_func, 5)
 
-    fp.close
-    time.sleep(10)
+        fp.close
+        time.sleep(10)
+
+if __name__ == "__main__":  # pragma: no cover
+    main(sys.argv[1])   # sys.argv[1] : minor_num (unique number of bus station)
