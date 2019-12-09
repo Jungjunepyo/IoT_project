@@ -51,4 +51,7 @@ def main(minor_input):
         time.sleep(10)
 
 if __name__ == "__main__":  # pragma: no cover
-    main(sys.argv[1])   # sys.argv[1] : minor_num (unique number of bus station)
+    try:
+        main(sys.argv[1])   # sys.argv[1] : minor_num (unique number of bus station)
+    except:
+        print("[Usage]: python ./mqtt_shadow.py [minor_num]")
