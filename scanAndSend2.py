@@ -58,7 +58,7 @@ def dust_read(channel):	#calculate and send dust data here
 		calVoltage = adcValue*(3.3/1024)
         else:	# Else, save average value
         	calVoltage = (calVoltage + adcValue*(3.3/1024))/2
-        dust_data = (0.172 * calVoltage) * 1000
+        dust_data = round((0.172 * calVoltage) * 1000, 6)
         print "dust_Data: %f" % (dust_data)
 
 def analog_read(channel):
