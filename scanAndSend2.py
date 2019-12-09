@@ -8,6 +8,7 @@ import math
 
 from coapthon.client.helperclient import HelperClient
 import spidev
+import Adafruit_DHT
 import time
 import RPi.GPIO as gpio
 
@@ -15,6 +16,11 @@ from threading import Thread
 
 import requests
 import json
+
+#humidity&temperature sensor
+sensor=Adafruit_DHT.DHT11
+
+
 
 #dust reading code
 spi = spidev.SpiDev()
@@ -79,7 +85,12 @@ try:
 	dust_data = 0.0
 	while True:
 		send_flag = 0	# To use for is it OK initialize dust_data and calVoltage value(flag 1 is OK for initialize)
-
+                h,t=Adafruit_DHT.read_retry(sensor,14)
+                if h is not None and t is not None:
+                    print("Temperature ={0:0.1f}*C Humidity = {1:0.1f}%".format(t,h))
+                else:
+                    print("error")
+                
 		dust_read(0)
 		time.sleep(1)
 		returnedList = blescan.parse_events(sock, 10)
@@ -102,11 +113,12 @@ try:
 		for beacon in returnedList:		
 			tmpList = beacon.split(',')
 			
-		    
-
 			if int(tmpList[2]) == 2 and int(tmpList[3]) <= 3 and int(tmpList[3]) >= 1:	# tmpList[2] : Major, tmpList[3] : Minor
 				if tmpList[5]>=-90:	# If TXpower is bigger than or equal -40# Send dust data to the server
 					data_list = {'minor_num': tmpList[3], 'dust_density': dust_data}
+					
+					if h > 70: # If humidity is too high
+                                            data_list['Unreliable'] = 'Too high humidity! Dust data value may be unreliable.'
 					data_send = json.dumps(data_list)
 
 					if send_flag == 1:	# Initialize calVoltage and dust_data for next measure section 
