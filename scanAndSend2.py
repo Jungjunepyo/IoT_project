@@ -102,12 +102,10 @@ try:
 		print lambda_list[13]
 		
 		if lambda_list[13] == "1":
-                    
-				#Set servo motor degree to +90
+			#Set servo motor degree to +90
 			servo_motor.ChangeDutyCycle(12)
-			
 		else:
-				#Set servo motor degree to -90
+			#Set servo motor degree to -90
 			servo_motor.ChangeDutyCycle(3)
 		print "----------"
 		for beacon in returnedList:		
