@@ -44,4 +44,4 @@ while True:
     Device.shadowUpdate(json.dumps(msg), Callback_func, 5)
 
     fp.close
-    time.sleep(5)
+    time.sleep(10)

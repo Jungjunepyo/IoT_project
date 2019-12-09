@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     ddat_str = event["dust_density"]
     ddat_float = float(ddat_str)
     
-    if (ddat_float > 90):
+    if (ddat_float > 250):  # If fine dust density is higher than
         result = {"servo_on":1}
     else:
         result = {"servo_on":0}
