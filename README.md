@@ -32,7 +32,7 @@ To work with this project, you should install **blueZ** module in your RPi first
     $ sudo shutdown -r now
 
 And also need to install **Adafruit_DHT** module in RPi which may be attached to bus.
-      sudo pip install Adafruit_DHT
+    $ sudo pip install Adafruit_DHT
 
 __testbleemit.py__ should run in RPi which is used for bus station (beaconing) puropse, and __scanAndSend2.py__ should run in RPi which is used for bus purpose.
 
