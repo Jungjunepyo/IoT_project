@@ -117,6 +117,17 @@ try:
 					
 					if h > 70: # If humidity is too high
                                             data_list['Unreliable'] = 'Too high humidity! Dust data value may be unreliable.'
+                                            
+                                        # Divise severity of fine dust density
+                                        if dust_data > 250:
+                                            data_list['Severity'] = 'VERY BAD'
+                                        elif dust_data > 150:
+                                            data_list['Severity'] = 'BAD'
+                                        elif dust_data > 75:
+                                            data_list['Severity'] = 'NORMAL'
+                                        else:
+                                            data_list['Severity'] = 'FINE'
+                                            
 					data_send = json.dumps(data_list)
 
 					if send_flag == 1:	# Initialize calVoltage and dust_data for next measure section 
