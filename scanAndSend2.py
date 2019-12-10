@@ -36,7 +36,7 @@ PWM_frequency = 50
 servo_motor = gpio.PWM(servo_pin, PWM_frequency) 
 servo_motor.start(0)	# Initial duty_cycle = 0. Duty cycle for servo motor can be varied between 3~7.5~12
 
-host = "192.168.0.67"    #CoAP Server IP
+host = "192.168.0.11"    #CoAP Server IP
 port = 5683
 path = "advanced"
 
@@ -93,7 +93,7 @@ try:
                 
 		dust_read(0)
 		time.sleep(1)
-		returnedList = blescan.parse_events(sock, 10)
+		returnedList = blescan.parse_events(sock, 50)
 		lambda_data = {"dust_density": dust_data}
 		rs_lambda = requests.post(host_lambda, json.dumps(lambda_data), headers=None)	# Get lambda transaction value for servo motor onoff
 		print rs_lambda.json()
@@ -102,17 +102,22 @@ try:
 		print lambda_list[13]
 		
 		if lambda_list[13] == "1":
-			#Set servo motor degree to +90
-			servo_motor.ChangeDutyCycle(12)
+		    #Set servo motor degree to +90
+                    servo_motor.ChangeDutyCycle(12.5)
+                    #print "servo1"
 		else:
-			#Set servo motor degree to -90
-			servo_motor.ChangeDutyCycle(3)
+		    #Set servo motor degree to -90
+                    servo_motor.ChangeDutyCycle(2.5)
+                    #print "servo0"
+		#time.sleep(1)
 		print "----------"
 		for beacon in returnedList:		
 			tmpList = beacon.split(',')
-			
+			#print(tmpList)
 			if int(tmpList[2]) == 2 and int(tmpList[3]) <= 3 and int(tmpList[3]) >= 1:	# tmpList[2] : Major, tmpList[3] : Minor
-				if tmpList[5]>=-90:	# If TXpower is bigger than or equal -40# Send dust data to the server
+                                #print 'txpower'+tmpList[5]
+				if tmpList[5]>=-50:	# If TXpower is bigger than or equal -40# Send dust data to the server
+                                        print 'txpower'+tmpList[5]
 					data_list = {'minor_num': tmpList[3], 'dust_density': dust_data}
 					
 					if h > 70: # If humidity is too high
