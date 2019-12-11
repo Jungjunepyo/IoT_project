@@ -12,7 +12,7 @@ class CoAPServer(CoAP):
 
 
 def main():  # pragma: no cover
-    ip = "192.168.0.67"	#server IP
+    ip = "192.168.0.11"	#server IP
     port = 5683
     
     server = CoAPServer(ip, port)

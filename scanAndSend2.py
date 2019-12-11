@@ -116,7 +116,7 @@ try:
 			#print(tmpList)
 			if int(tmpList[2]) == 2 and int(tmpList[3]) <= 3 and int(tmpList[3]) >= 1:	# tmpList[2] : Major, tmpList[3] : Minor
                                 #print 'txpower'+tmpList[5]
-				if tmpList[5]>=-50:	# If TXpower is bigger than or equal -40# Send dust data to the server
+				if tmpList[5]>=-40:	# If TXpower is bigger than or equal -40# Send dust data to the server
                                         print 'txpower'+tmpList[5]
 					data_list = {'minor_num': tmpList[3], 'dust_density': dust_data}
 					

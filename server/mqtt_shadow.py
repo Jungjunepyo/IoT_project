@@ -4,12 +4,12 @@ import json
 import sys
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient  # need to install AWSIoTPythonSDK via pip
 
-Client_ID = "CoAP_Client"
-Thing_Name = "IoT_System"  #Device ID
-Host_Name = "a2zom7jv3fdwvd-ats.iot.ap-southeast-2.amazonaws.com"   #End Point
-Root_CA = "./cert2/RootCA.crt"
-Private_Key = "./cert2/b603b692cf-private.pem.key"
-Cert_File = "./cert2/b603b692cf-certificate.pem.crt"
+Client_ID = "CoAP_Client"   # Just not equal to Thing_Name
+Thing_Name = "IoT_System"  # Device ID
+Host_Name = "a2zom7jv3fdwvd-ats.iot.ap-southeast-2.amazonaws.com"   # End Point
+Root_CA = "./cert2/RootCA.crt"  # Root_CA file
+Private_Key = "./cert2/b603b692cf-private.pem.key"  # Your private key
+Cert_File = "./cert2/b603b692cf-certificate.pem.crt"    # Your cert file
 
 Client = AWSIoTMQTTShadowClient(Client_ID)
 Client.configureEndpoint(Host_Name, 8883)
@@ -48,9 +48,10 @@ def main(minor_input):
         Device.shadowUpdate(json.dumps(msg), Callback_func, 5)
 
         fp.close
-        time.sleep(10)
+        exit(0) # Just send one time
+        #time.sleep(10)
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     try:
         main(sys.argv[1])   # sys.argv[1] : minor_num (unique number of bus station)
     except:
