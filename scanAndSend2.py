@@ -20,8 +20,6 @@ import json
 #humidity&temperature sensor
 sensor=Adafruit_DHT.DHT11
 
-
-
 #dust reading code
 spi = spidev.SpiDev()
 spi.open(0, 0)
@@ -47,6 +45,7 @@ host_lambda='https://cbqz37du17.execute-api.ap-northeast-2.amazonaws.com/default
 def dust_read(channel):	#calculate and send dust data here
 	global calVoltage
 	global dust_data
+	global data_count
 
 	gpio.output(LED, gpio.LOW)
 	time.sleep(0.00028)
@@ -56,10 +55,11 @@ def dust_read(channel):	#calculate and send dust data here
 	time.sleep(0.00968)
 	if calVoltage == 0.0:	# If it is first time of reading calVoltage
 		calVoltage = adcValue*(3.3/1024)
-        else:	# Else, save average value
-        	calVoltage = (calVoltage + adcValue*(3.3/1024))/2
-        dust_data = round((0.172 * calVoltage) * 1000, 6)
-        print "dust_Data: %f" % (dust_data)
+	else:	# Else, save average value
+		calVoltage = calVoltage + adcValue*(3.3/1024)
+	dust_data = round((0.172 * calVoltage) * 1000, 6) / data_count
+	data_count += 1.0	# Increase data_count 1
+	print "dust_Data: %f" % (dust_data)
 
 def analog_read(channel):
     r = spi.xfer2([1, (8 + channel) << 4, 0])
@@ -83,6 +83,7 @@ blescan.hci_enable_le_scan(sock)
 try:
 	calVoltage = 0.0
 	dust_data = 0.0
+	data_count = 1.0
 	while True:
 		send_flag = 0	# To use for is it OK initialize dust_data and calVoltage value(flag 1 is OK for initialize)
                 h,t=Adafruit_DHT.read_retry(sensor,14)
@@ -138,6 +139,7 @@ try:
 					if send_flag == 1:	# Initialize calVoltage and dust_data for next measure section 
 						calVoltage = 0.0
 						dust_data = 0.0
+						data_count = 1.0
 					send_flag = 1	# Set send_flag 1 at bus station for initializing measured value
 
 					print beacon
